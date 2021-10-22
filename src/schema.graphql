@@ -1,0 +1,64 @@
+type Bouquet {
+	id: ID!
+	title: String!
+	price: Float!
+	photo: String!
+	seller: Seller!
+}
+
+type Seller {
+	id: ID!
+	title: String!
+	photo: String!
+	creationDate: String!
+	bouquets: [Bouquet]
+	bouquetsSold: Int!
+}
+
+type Customer {
+	id: ID!
+	name: String!
+	email: String!
+	purchases: [Purchase]
+}
+
+type Purchase {
+	id: ID!
+	bouquet: Bouquet!
+	customer: Customer!
+	price: Float!
+	income: Float!
+}
+
+
+type Query {
+	customer(id: ID!): Customer
+	allCustomers: [Customer]!
+
+	bouquet(id: ID!): Bouquet
+	allBouquets: [Bouquet]!
+	bouquetsBySeller(sellerId: ID!): [Bouquet]
+
+	purchase(id: ID!): Purchase
+	purchases(customerId: Int!): [Purchase]!
+	allPurchases: [Purchase]!
+
+	seller(id: Int!): Seller
+	allSellers: [Seller]!
+}
+
+type Mutation {
+	createCustomer(name: String!, email: String!): Customer!
+	deleteCustomer(id: ID!): Boolean
+	updateCustomer(id: ID!, name: String, email: String): Customer!
+
+	createBouquet(title: String!, price: Float!, photo: String!, sellerId: Int!): Bouquet!
+	deleteBouquet(id: ID!): Boolean 
+	updateBouquet(id: ID!, title: String, price: Float, photo: String): Bouquet!
+
+	createSeller(title: String!, photo: String!): Seller! 
+	deleteSeller(id: ID!): Boolean
+	updateSeller(id: ID!, title: String, photo: String): Seller!
+
+	purchaseBouquet(id: ID!, customerId: Int!): Purchase!
+}
