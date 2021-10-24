@@ -5,11 +5,13 @@ import { CustomersModule } from 'src/customers/customers.module';
 import { BouquetModule } from 'src/bouquets/bouquets.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Purchase } from './purchases.entity';
+import { SellersModule } from 'src/sellers/sellers.module';
 
 @Module({
 	imports: [
 		forwardRef(() => CustomersModule),
 		forwardRef(() => BouquetModule),
+		forwardRef(() => SellersModule),
 		TypeOrmModule.forFeature([Purchase]),
 	],
 	providers: [PurchaseResolver, PurchaseService],

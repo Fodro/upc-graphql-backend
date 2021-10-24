@@ -52,4 +52,9 @@ export class SellersService {
 		this.sellerRepository.save(seller);
 		return seller;
 	}
+	async purchaseBouquet(id: number): Promise<void>{
+		const seller: Seller = await this.sellerRepository.findOne(id);
+		seller.bouquetsSold += 1;
+		await this.sellerRepository.save(seller);
+	}
 }

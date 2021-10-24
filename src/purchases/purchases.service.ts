@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BouquetService } from 'src/bouquets/bouquets.service';
 import { CustomersService } from 'src/customers/customers.service';
+import { SellersService } from 'src/sellers/sellers.service';
 
 @Injectable()
 export class PurchaseService {
@@ -16,6 +17,9 @@ export class PurchaseService {
 		
 		@Inject(forwardRef(() => CustomersService))
 		private customersService: CustomersService,
+
+		@Inject(forwardRef(() => SellersService))
+		private sellersService: SellersService,
 	){}
 	async makePurchase(bouquetId: number, userId: number): Promise<Purchase>{
 		const bouquet = await this.bouquetsService.findById(bouquetId);
@@ -25,6 +29,8 @@ export class PurchaseService {
 		const customer = await this.customersService.findById(userId);
 		if (!customer)
 			throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+
+		await this.sellersService.purchaseBouquet(userId);
 
 		const newPurchase = new Purchase();
 		newPurchase.bouquetId = bouquetId;
